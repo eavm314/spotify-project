@@ -5,9 +5,11 @@ import SongImage from "./SongImage";
 interface SongCardProps {
   songTitle: string;
   color: string;
+  songImageLink: string;
 }
 export const SongCard = (props: SongCardProps) => {
 
+  // TODO: Insertar definición de colores según portada
   const colorMap: Record<string, string> = {
     "Electric Dreams": "bg-[#1DB954]",
     "Starry Night": "bg-[#F8D100]",
@@ -16,17 +18,23 @@ export const SongCard = (props: SongCardProps) => {
     "Purple Haze": "bg-[#8A00B8]",
   };
 
-  const[locked, setLocked] = useState(false);
-  
+  const [locked, setLocked] = useState(false);
+
+  const changeLock = () => {
+    setLocked(!locked);
+  };
+
   return (
     <div
-      className={`flex flex-1 flex-col h-full ${colorMap[props.songTitle]} items-center justify-evenly py-3 px-7`}
+      className={`flex flex-1 flex-col h-full ${
+        colorMap[props.songTitle]
+      } items-center justify-evenly py-3 px-7`}
     >
-      <SongImage />
+      <SongImage linkImage={props.songImageLink}/>
       <h1 className="text-white font-bold text-center text-2xl">
         {props.songTitle}
       </h1>
-      <RowButtons locked={locked} />
+      <RowButtons locked={locked} changeLock={changeLock}/>
     </div>
   );
 };
