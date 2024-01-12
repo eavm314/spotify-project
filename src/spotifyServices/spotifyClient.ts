@@ -1,6 +1,21 @@
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
+import { cookies } from "next/headers";
 
-const api = SpotifyApi.withClientCredentials(
-    "1656bd8907de4df193a34e344ec80e6b",
-    "9d7644e553f9452cb206b94b562b4a53"
+export const api = SpotifyApi.withClientCredentials(
+  process.env.SPOTIFY_CLIENT_ID as string,
+  process.env.SPOTIFY_SECRET as string,
+  [],
+  {
+    beforeRequest: async (url, options) => {
+      const token = cookies().get("token");
+
+      if (token) {
+        console.log("hay token");
+        options.headers = {
+          "Authorization": "Bearer " + token.value,
+          'Content-Type': 'application/json'
+        }
+      }
+    },
+  }
 );
