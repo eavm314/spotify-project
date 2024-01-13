@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import RowButtons from "./RowButtons";
 import SongImage from "./SongImage";
@@ -23,11 +24,13 @@ export const SongCard = (props: SongCardProps) => {
   const changeLock = () => {
     setLocked(!locked);
   };
+  
+
 
   return (
     <div
       className={`flex flex-1 flex-col h-full ${
-        colorMap[props.songTitle]
+        colorMap[props.color]
       } items-center justify-evenly py-3 px-7`}
     >
       <SongImage linkImage={props.songImageLink}/>

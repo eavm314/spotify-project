@@ -1,4 +1,4 @@
-import { SongsContainer } from "@/components/card/SongsContainer";
+import { SongsContainer } from "@/components/containers/SongsContainer";
 import { ComboBox } from "@/components/input/ComboBox";
 import { Text } from "@/components/text/Text";
 import { TitleText } from "@/components/text/TitleText";
@@ -20,7 +20,7 @@ const GeneratorPage = () => {
           </div>
         </div>
       </div>
-      <SongsContainer />
+      <SongsContainer/>
     </div>
   );
 };
