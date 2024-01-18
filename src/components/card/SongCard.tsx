@@ -1,15 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RowButtons from "./RowButtons";
 import SongImage from "./SongImage";
+import LockArrayContext from "@/context/LockArrayContext";
 
 interface SongCardProps {
+  cardPos: number;
   songTitle: string;
   color: string;
   songImageLink: string;
 }
 export const SongCard = (props: SongCardProps) => {
-
   // TODO: Insertar definición de colores según portada
   const colorMap: Record<string, string> = {
     "Electric Dreams": "bg-[#1DB954]",
@@ -20,12 +21,18 @@ export const SongCard = (props: SongCardProps) => {
   };
 
   const [locked, setLocked] = useState(false);
-
+  const { lockArray, setLockArray } = useContext(LockArrayContext);
+  
   const changeLock = () => {
     setLocked(!locked);
   };
-  
 
+  useEffect(() => {
+    const newLockArray = lockArray;
+    newLockArray[props.cardPos] = locked;
+    setLockArray(newLockArray);
+    console.log(newLockArray);
+  }, [locked]);
 
   return (
     <div
@@ -33,11 +40,11 @@ export const SongCard = (props: SongCardProps) => {
         colorMap[props.color]
       } items-center justify-evenly py-3 px-7`}
     >
-      <SongImage linkImage={props.songImageLink}/>
+      <SongImage linkImage={props.songImageLink} />
       <h1 className="text-white font-bold text-center text-2xl">
         {props.songTitle}
       </h1>
-      <RowButtons locked={locked} changeLock={changeLock}/>
+      <RowButtons locked={locked} changeLock={changeLock} />
     </div>
   );
 };

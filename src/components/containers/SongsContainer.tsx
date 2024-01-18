@@ -2,32 +2,54 @@
 import { getRandomSongs } from "@/spotifyServices/getRandomSongs";
 import { SongCard } from "../card/SongCard";
 import { Track as Song } from "@spotify/web-api-ts-sdk";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { GENRE } from "@/constants/constants";
+import LockArrayContext, {
+  LockArrayContextProvider,
+} from "@/context/LockArrayContext";
 
 export const SongsContainer = () => {
   // Current tracks in container
   const [songs, setSongs] = useState<Song[]>([]);
+  const searchParams = useSearchParams();
+
+  const { lockArray, setLockArray } = useContext(LockArrayContext);
+
+  // useEffect para actualizar el genero y la función de distribución
 
   useEffect(() => {
-    if (songs.length === 0)
-      getRandomSongs(5).then((randomSongs) => setSongs(randomSongs));
-    // Define the event handler
+    if (songs.length === 0) {
+      const genre: string = searchParams.get(GENRE)?.toString() || "rock";
+      getRandomSongs(lockArray.length, genre).then((randomSongs) =>
+        setSongs(randomSongs)
+      );
+    }
+
+    // Función de distribución
     const handleKeyDown = (event: any) => {
       if (event.key === " ") {
-        // Check if the pressed key is space
-        // Fetch and set new songs when space bar is pressed
-        getRandomSongs(5).then((songsObtained) => setSongs(songsObtained));
+        const genre: string = searchParams.get(GENRE)?.toString() || "rock";
+        getRandomSongs(lockArray.length, genre).then((songsObtained) => {
+          // const newSongs: Song[] = songs;
+          // for (let i = 0, j = 0; i < lockArray.length; i++) {
+          //   if (!lockArray[i]) {
+          //     newSongs[i] = songsObtained[j];
+          //     j++;
+          //   }
+          // }
+          setSongs(songsObtained);
+        });
       }
     };
 
-    // Add the event listener
+    // Actualizar la función redefinida
     window.addEventListener("keydown", handleKeyDown);
-
-    // Cleanup: remove the event listener when the component unmounts
+    // Remover la función y el listener una vez que el componente es removido
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [searchParams]);
 
   const songList = [
     {
@@ -60,6 +82,7 @@ export const SongsContainer = () => {
           key={index}
           songTitle={song.name}
           songImageLink={song.album.images[0].url}
+          cardPos={index}
         />
       ))}
     </div>

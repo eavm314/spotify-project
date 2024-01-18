@@ -1,16 +1,21 @@
-"use server"
+"use server";
 import { Genres, Track } from "@spotify/web-api-ts-sdk";
-import { api } from "./spotifyClient"
+import { api } from "./spotifyClient";
+import { StringDecoder } from "string_decoder";
 
 export const getGenres = async (): Promise<string[]> => {
   const genres = await api.recommendations.genreSeeds();
-  return genres.genres
-}
+  return genres.genres;
+};
 
-export const getRandomSongs = async (amount: number): Promise<Track[]> => {
+export const getRandomSongs = async (
+  amount: number,
+  genre: string
+): Promise<Track[]> => {
+  console.log(genre);
   const recommendations = await api.recommendations.get({
     limit: amount,
-    seed_genres: ["rock"],
+    seed_genres: [genre],
     // seed_artists: ["7vk5e3vY1uw9plTHJAMwjN"],
   });
 
@@ -18,5 +23,5 @@ export const getRandomSongs = async (amount: number): Promise<Track[]> => {
 
   // const artistTracks = await api.artists.topTracks("7vk5e3vY1uw9plTHJAMwjN", "ES")
   // return artistTracks.tracks;
-  return recommendations.tracks
-}
+  return recommendations.tracks;
+};
