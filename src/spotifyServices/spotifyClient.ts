@@ -8,7 +8,6 @@ export const api = SpotifyApi.withClientCredentials(
   {
     beforeRequest: async (url, options) => {
       const token = cookies().get("token");
-
       if (token) {
         console.log("hay token");
         options.headers = {
