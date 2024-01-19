@@ -14,7 +14,7 @@ export const SongsContainer = () => {
   const [songs, setSongs] = useState<Song[]>([]);
   const searchParams = useSearchParams();
 
-  const { lockArray, setLockArray } = useContext(LockArrayContext);
+  const { lockArray } = useContext(LockArrayContext);
 
   // useEffect para actualizar el genero y la función de distribución
 
@@ -30,18 +30,17 @@ export const SongsContainer = () => {
     const handleKeyDown = (event: any) => {
       if (event.key === " ") {
         const genre: string = searchParams.get(GENRE)?.toString() || "rock";
-        getRandomSongs(lockArray.length, genre).then((songsObtained) => {
-          // const newSongs: Song[] = songs;
-          // for (let i = 0, j = 0; i < lockArray.length; i++) {
-          //   if (!lockArray[i]) {
-          //     newSongs[i] = songsObtained[j];
-          //     j++;
-          //   }
-          // }
-          setSongs(songsObtained);
-        });
+        getRandomSongs(lockArray.length, genre).then((songsObtained) =>
+          setSongs(
+            songsObtained.map((song, index) =>
+              lockArray[index] ? songs[index] : song
+            )
+          )
+        );
       }
     };
+
+    console.log(songs.map((song) => song.name));
 
     // Actualizar la función redefinida
     window.addEventListener("keydown", handleKeyDown);
@@ -49,7 +48,7 @@ export const SongsContainer = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [searchParams]);
+  }, [searchParams, songs]);
 
   const songList = [
     {
