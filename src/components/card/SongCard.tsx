@@ -31,7 +31,6 @@ export const SongCard = (props: SongCardProps) => {
     const newLockArray = lockArray;
     newLockArray[props.cardPos] = locked;
     setLockArray(newLockArray);
-    console.log(newLockArray);
   }, [locked]);
 
   return (

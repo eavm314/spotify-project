@@ -7,7 +7,7 @@ import Link from "next/link";
 const PruebasPage = async () => {
 
   // console.log(process.env.SPOTIFY_CLIENT_ID)
-  const tracks = await getRandomSongs(5);
+  const tracks = await getRandomSongs(5, "rock");
   console.log(tracks)
   const user = await getUser();
   console.log(user)
