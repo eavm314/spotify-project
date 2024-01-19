@@ -9,7 +9,7 @@ interface Props {
 export const Button = ({ children, action }: Props) => {
   return (
     <button 
-      className="bg-green-400 px-4 py-2"
+      className="bg-green-600 px-4 py-2 rounded-lg"
       onClick={action}
       type="button" 
     >

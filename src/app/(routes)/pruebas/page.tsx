@@ -3,14 +3,15 @@ import { Text } from "@/components/text/Text";
 import { getRandomSongs } from "@/spotifyServices/getRandomSongs";
 import { getUser } from "@/spotifyServices/userInfo";
 import Link from "next/link";
+import { CreatePlaylistButton } from "../../../components/input/CreatePlaylistButton";
 
 const PruebasPage = async () => {
 
   // console.log(process.env.SPOTIFY_CLIENT_ID)
-  const tracks = await getRandomSongs(5, "rock");
-  console.log(tracks)
+  const tracks = await getRandomSongs(5, "edm");
+  // console.log(tracks)
   const user = await getUser();
-  console.log(user)
+  // console.log(user)
 
   return (
     <div className="">
@@ -32,7 +33,8 @@ const PruebasPage = async () => {
           Usuario: {user.display_name}
         </div> :
         <p>No hay user</p>
-        }
+      }
+      <CreatePlaylistButton uris={tracks.map(t => t.uri)} />
     </div>
   )
 }

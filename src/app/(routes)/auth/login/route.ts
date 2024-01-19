@@ -5,7 +5,12 @@ export async function GET(req: Request) {
   const requestUrl = new URL(req.url);
 
   const redirect_uri = `${requestUrl.origin}/auth/callback`;
-  const scope = ["user-read-private", "user-read-email"];
+  const scope = [
+    "user-read-private", 
+    "user-read-email",
+    "playlist-modify-public",
+    "playlist-modify-private"
+  ];
 
   return NextResponse.redirect('https://accounts.spotify.com/authorize?' +
     encode({

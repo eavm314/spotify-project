@@ -8,6 +8,7 @@ import { GENRE } from "@/constants/constants";
 import LockArrayContext, {
   LockArrayContextProvider,
 } from "@/context/LockArrayContext";
+import { CreatePlaylistButton } from "../input/CreatePlaylistButton";
 
 export const SongsContainer = () => {
   // Current tracks in container
@@ -74,16 +75,21 @@ export const SongsContainer = () => {
   ];
 
   return (
-    <div className="flex h-[70%] w-full bg-slate-300">
-      {songs.map((song, index) => (
-        <SongCard
-          color={songList[index].title}
-          key={index}
-          songTitle={song.name}
-          songImageLink={song.album.images[0].url}
-          cardPos={index}
-        />
-      ))}
+    <>
+    <div className="absolute top-5 left-5">
+      <CreatePlaylistButton uris={songs.map(s => s.uri)} />
     </div>
+      <div className="flex h-[70%] w-full bg-slate-300">
+        {songs.map((song, index) => (
+          <SongCard
+            color={songList[index].title}
+            key={index}
+            songTitle={song.name}
+            songImageLink={song.album.images[0].url}
+            cardPos={index}
+          />
+        ))}
+      </div>
+    </>
   );
 };
