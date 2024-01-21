@@ -24,7 +24,7 @@ const getToken = async () => {
 
 var apiCalls = 0;
 
-const createClient = async () => {
+export const createClient = async () => {
   const token = await getToken();
   return SpotifyApi.withAccessToken(
     clientId,
@@ -55,4 +55,4 @@ const createClient = async () => {
 }
 
 // @ts-ignore
-export const api = await createClient();
+// export const api = await createClient();
