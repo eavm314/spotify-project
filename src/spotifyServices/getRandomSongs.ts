@@ -1,12 +1,10 @@
 "use server";
 import { Genres, Track } from "@spotify/web-api-ts-sdk";
-// import { api } from "./spotifyClient";
+import { api } from "./spotifyClient";
 import { StringDecoder } from "string_decoder";
 import { cache } from "react";
-import { createClient } from "./spotifyClient";
 
 export const getGenres = cache(async (): Promise<string[]> => {
-  const api = await createClient();
   const genres = await api.recommendations.genreSeeds();
   return genres.genres;
 });
@@ -16,7 +14,6 @@ export const getRandomSongs = cache(async (
   genre: string
 ): Promise<Track[]> => {
   console.log(genre);
-  const api = await createClient();
 
   const recommendations = await api.recommendations.get({
     limit: amount,
