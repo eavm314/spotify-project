@@ -11,7 +11,13 @@ interface RowButtonsProps {
 const RowButtons = (props: RowButtonsProps) => {
   return (
     <div className="flex justify-between mt-4 w-full">
-      <button className="w-[20%] text-white hover:scale-125 transition duration-300 ease-in-out" onClick={props.changeLock}>
+      <button
+        className="w-[20%] text-white hover:scale-125 transition duration-300 ease-in-out"
+        onClick={(e) => {
+          e.currentTarget.blur();
+          props.changeLock();
+        }}
+      >
         {props.locked ? (
           <LockClosedIcon className="h-fit" />
         ) : (
