@@ -14,6 +14,7 @@ export const getRandomSongs = cache(async (
   genre: string
 ): Promise<Track[]> => {
   console.log(genre);
+
   const recommendations = await api.recommendations.get({
     limit: amount,
     seed_genres: [genre],

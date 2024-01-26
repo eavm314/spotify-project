@@ -4,6 +4,8 @@ import { api } from "./spotifyClient"
 import { getUser } from "./userInfo"
 
 export const createPlaylist = async (name: string, description: string, initSongs: string[]) => {
+  console.log(name, description, initSongs);
+
   const user = await getUser();
   if (!user) return undefined;
 
@@ -17,6 +19,7 @@ export const createPlaylist = async (name: string, description: string, initSong
 }
 
 export const createRandomPlaylist = async (songUris: string[]) => {
+  console.log(songUris)
   const user = await getUser();
   if (!user) return undefined;
   await createPlaylist(user.display_name + '_' + randomInt(100000, 999999), "Random generated Playlist", songUris);
