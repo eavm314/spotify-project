@@ -16,8 +16,8 @@ const GeneratorPage = () => {
         <Text>
           Press SPACE in order to shuffle 5 different songs to your new Playlist
         </Text>
-        <div className="flex w-full justify-evenly">
-          <ComboBox text="Random Genre" getData={getGenres} />
+        <div className="flex h-[10%] w-full justify-evenly">
+          <ComboBox initialText="Random Genre" getData={getGenres} />
           {/* <ComboBox text="Random Artist" /> */}
         </div>
       </div>

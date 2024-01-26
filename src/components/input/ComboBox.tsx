@@ -1,17 +1,25 @@
 "use client";
-import { Fragment, useEffect, useState } from "react";
-import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ArrowDownIcon } from "@heroicons/react/16/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 interface ComboBoxProps {
-  text: string;
+  initialText: string;
   getData: () => Promise<string[]>;
 }
 
 export const ComboBox = (props: ComboBoxProps) => {
+  // Dropdown States - Para abrir y manipular la lógica del dropdown
   const [data, setData] = useState<string[]>([]);
-  const [selected, setSelected] = useState(props.text);
+  const [selected, setSelected] = useState(props.initialText);
+  const [inputValue, setInputValue] = useState("");
+  const [open, setOpen] = useState(false);
+
+  // Referencia para controlar al componente
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Global States - Para manipular la lógica de la página
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -33,67 +41,70 @@ export const ComboBox = (props: ComboBoxProps) => {
       const randomIndex = Math.floor(Math.random() * spotifyGenres.length);
       handleGenre(spotifyGenres[randomIndex]);
     });
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    // Attach the event listener to the document
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
-    <div className="flex w-[50%]">
-      <Listbox
-        value={selected}
-        onChange={(item: string) => {
-          handleGenre(item);
+    <div className="absolute w-72 font-medium h-80" ref={dropdownRef}>
+      <div
+        className="bg-white w-full p-2 flex items-center justify-between rounded text-black"
+        onClick={() => {
+          setOpen(!open);
+          setInputValue("");
         }}
       >
-        <div className="relative w-full mx-20 mt-1">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none sm:text-sm">
-            <span className="block truncate text-black">{selected}</span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronUpDownIcon
-                className="h-5 w-5 text-black"
-                aria-hidden="true"
-              />
-            </span>
-          </Listbox.Button>
-          <Transition
-            as={Fragment}
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-              {data.map((genre, genreIndex) => (
-                <Listbox.Option
-                  key={genreIndex}
-                  className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? "bg-amber-100 text-amber-900" : "text-gray-900"
-                    }`
-                  }
-                  value={genre}
-                  onClick={(e) => e.currentTarget.blur()}
-                  onBlur={(e) => e.currentTarget.blur()}
-                >
-                  {({ selected }) => (
-                    <>
-                      <span
-                        className={`block truncate ${
-                          selected ? "font-medium" : "font-normal"
-                        }`}
-                      >
-                        {genre}
-                      </span>
-                      {selected ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                      ) : null}
-                    </>
-                  )}
-                </Listbox.Option>
-              ))}
-            </Listbox.Options>
-          </Transition>
+        {selected}
+        <ArrowDownIcon height={20} />
+      </div>
+      <ul
+        className={`bg-white mt-2 overflow-y-auto ${
+          open ? "max-h-60" : "max-h-0"
+        }`}
+      >
+        <div className="flex items-center px-2 sticky top-0 bg-white text-black">
+          <MagnifyingGlassIcon height={18} className="text-gray-700" />
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value.toLowerCase())}
+            placeholder="Enter Genre"
+            className="placeholder:text-gray-700 p-2 outline-none"
+          />
         </div>
-      </Listbox>
+        {data.map((item, index) => (
+          <li
+            key={index}
+            className={`p-2 text-sm hover:bg-blue-400 hover:text-white 
+            ${item === selected ? "bg-blue-400 text-white" : "text-black"} 
+            ${item?.toLowerCase().startsWith(inputValue) ? "block" : "hidden"}`}
+            onClick={() => {
+              if (item !== selected) {
+                handleGenre(item);
+                setInputValue("");
+                setOpen(false);
+              }
+            }}
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
