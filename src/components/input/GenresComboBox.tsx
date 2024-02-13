@@ -37,6 +37,7 @@ export const GenresComboBox = (props: GenresComboBoxProps) => {
   };
 
   useEffect(() => {
+    replace(pathname);
     props.getGenres().then((spotifyGenres) => {
       setGenres(spotifyGenres);
       const randomIndex = Math.floor(Math.random() * spotifyGenres.length);
