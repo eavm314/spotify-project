@@ -22,7 +22,7 @@ export const SongCard = (props: SongCardProps) => {
 
   const [locked, setLocked] = useState(false);
   const { lockArray, setLockArray } = useContext(LockArrayContext);
-  
+
   const changeLock = () => {
     setLocked(!locked);
   };
@@ -43,7 +43,11 @@ export const SongCard = (props: SongCardProps) => {
       <h1 className="text-white font-bold text-center text-2xl">
         {props.songTitle}
       </h1>
-      <RowButtons locked={locked} changeLock={changeLock} />
+      <RowButtons
+        locked={locked}
+        changeLock={changeLock}
+        cardPos={props.cardPos}
+      />
     </div>
   );
 };

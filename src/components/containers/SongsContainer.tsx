@@ -7,44 +7,15 @@ import { useSearchParams } from "next/navigation";
 import { GENRE } from "@/constants/constants";
 import LockArrayContext from "@/context/LockArrayContext";
 import { CreatePlaylistButton } from "../input/CreatePlaylistButton";
+import SongsContext from "@/context/SongsContext";
 
 export const SongsContainer = () => {
   // Current tracks in container
-  const [songs, setSongs] = useState<Song[]>([]);
   const searchParams = useSearchParams();
-
-  const { lockArray } = useContext(LockArrayContext);
-
-  // Género actualizado solamente si cambian los parámetros de búsqueda
-  const genre = useMemo(() => {
-    return searchParams.get(GENRE)?.toString();
-  }, [searchParams]);
-
-  // Función de distribución
-  const handleKeyDown = useCallback(
-    (event: any) => {
-      if (event.key === " ") {
-        getRandomSongs(lockArray.length, genre || "rock").then(
-          (songsObtained) =>
-            setSongs(
-              songsObtained.map((song, index) =>
-                lockArray[index] ? songs[index] : song
-              )
-            )
-        );
-      }
-    },
-    [searchParams, songs]
-  );
+  const { songs, handleKeyDown } = useContext(SongsContext);
 
   // useEffect para actualizar el genero y la función de distribución
   useEffect(() => {
-    if (songs.length === 0 && genre) {
-      getRandomSongs(lockArray.length, genre).then((randomSongs) =>
-        setSongs(randomSongs)
-      );
-    }
-
     console.log(songs.map((song) => song.name));
 
     window.addEventListener("keydown", handleKeyDown);
