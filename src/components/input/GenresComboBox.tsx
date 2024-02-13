@@ -3,15 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ArrowDownIcon } from "@heroicons/react/16/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { GENRE } from "@/constants/constants";
 
-interface ComboBoxProps {
+interface GenresComboBoxProps {
   initialText: string;
   getData: () => Promise<string[]>;
 }
 
-export const ComboBox = (props: ComboBoxProps) => {
+export const GenresComboBox = (props: GenresComboBoxProps) => {
   // Dropdown States - Para abrir y manipular la lógica del dropdown
-  const [data, setData] = useState<string[]>([]);
+  const [genres, setGenres] = useState<string[]>([]);
   const [selected, setSelected] = useState(props.initialText);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
@@ -28,16 +29,18 @@ export const ComboBox = (props: ComboBoxProps) => {
     setSelected(term);
     const params = new URLSearchParams(searchParams);
     if (term) {
-      params.set("genre", term);
+      params.set(GENRE, term);
     } else {
-      params.delete("genre");
+      params.delete(GENRE);
     }
     replace(`${pathname}?${params.toString()}`);
   };
 
   useEffect(() => {
+    replace(`${pathname}`);
+
     props.getData().then((spotifyGenres) => {
-      setData(spotifyGenres);
+      setGenres(spotifyGenres);
       const randomIndex = Math.floor(Math.random() * spotifyGenres.length);
       handleGenre(spotifyGenres[randomIndex]);
     });
@@ -87,7 +90,7 @@ export const ComboBox = (props: ComboBoxProps) => {
             className="placeholder:text-gray-700 p-2 outline-none"
           />
         </div>
-        {data.map((item, index) => (
+        {genres.map((item, index) => (
           <li
             key={index}
             className={`p-2 text-sm hover:bg-blue-400 hover:text-white 
