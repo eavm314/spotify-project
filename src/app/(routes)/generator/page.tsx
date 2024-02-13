@@ -18,7 +18,7 @@ const GeneratorPage = () => {
               Playlist
             </Text>
             <div className="flex h-[10%] w-full justify-evenly">
-              <GenresComboBox initialText="Random Genre" getData={getGenres} />
+              <GenresComboBox initialText="Random Genre" getGenres={getGenres} />
               {/* <ComboBox text="Random Artist" /> */}
             </div>
           </div>

@@ -33,6 +33,10 @@ export const SongCard = (props: SongCardProps) => {
     setLockArray(newLockArray);
   }, [locked]);
 
+  useEffect(()=>{
+    setLocked(lockArray[props.cardPos])
+  },[lockArray])
+
   return (
     <div
       className={`flex flex-1 flex-col h-full ${

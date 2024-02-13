@@ -1,13 +1,10 @@
 "use client";
-import { getRandomSongs } from "@/spotifyServices/getRandomSongs";
 import { SongCard } from "../card/SongCard";
-import { Track as Song } from "@spotify/web-api-ts-sdk";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { GENRE } from "@/constants/constants";
-import LockArrayContext from "@/context/LockArrayContext";
 import { CreatePlaylistButton } from "../input/CreatePlaylistButton";
 import SongsContext from "@/context/SongsContext";
+import SurpriseMeButton from "../input/SurpriseMeButton";
 
 export const SongsContainer = () => {
   // Current tracks in container
@@ -52,6 +49,9 @@ export const SongsContainer = () => {
     <>
       <div className="absolute top-5 left-5">
         <CreatePlaylistButton uris={songs.map((s) => s.uri)} />
+      </div>
+      <div className="absolute top-5 right-5">
+        <SurpriseMeButton />
       </div>
       <div className="flex h-[70%] w-full bg-slate-300">
         {songs.map((song, index) => (

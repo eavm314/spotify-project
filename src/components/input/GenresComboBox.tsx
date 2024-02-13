@@ -7,7 +7,7 @@ import { GENRE } from "@/constants/constants";
 
 interface GenresComboBoxProps {
   initialText: string;
-  getData: () => Promise<string[]>;
+  getGenres: () => Promise<string[]>;
 }
 
 export const GenresComboBox = (props: GenresComboBoxProps) => {
@@ -39,7 +39,7 @@ export const GenresComboBox = (props: GenresComboBoxProps) => {
   useEffect(() => {
     replace(`${pathname}`);
 
-    props.getData().then((spotifyGenres) => {
+    props.getGenres().then((spotifyGenres) => {
       setGenres(spotifyGenres);
       const randomIndex = Math.floor(Math.random() * spotifyGenres.length);
       handleGenre(spotifyGenres[randomIndex]);

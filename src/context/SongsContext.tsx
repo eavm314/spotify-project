@@ -23,13 +23,15 @@ interface SongsContextType {
   setSongs: Dispatch<SetStateAction<Song[]>>;
   handleKeyDown: (event: any) => void;
   getRandomSong: (cardPos: number) => void;
+  setRandomSongs: () => void;
 }
 
 export const SongsContext = createContext<SongsContextType>({
   songs: [],
   setSongs: () => {},
   handleKeyDown: () => {},
-  getRandomSong: async () => {},
+  getRandomSong: () => {},
+  setRandomSongs: () => {},
 });
 
 // Definir el componente "Provider" del context
@@ -87,11 +89,15 @@ export const SongsContextProvider: FC<SongsContextProviderProps> = ({
     [genre, lockArray]
   );
 
+  const setRandomSongs = useCallback(() => {
+    getRandomSongs(lockArray.length, genre || "rock").then((randomSongs) =>
+      setSongs(randomSongs)
+    );
+  }, [genre, lockArray]);
+
   useEffect(() => {
     if (songs.length === 0 && genre) {
-      getRandomSongs(lockArray.length, genre).then((randomSongs) =>
-        setSongs(randomSongs)
-      );
+      setRandomSongs();
     }
   }, [genre]);
 
@@ -102,6 +108,7 @@ export const SongsContextProvider: FC<SongsContextProviderProps> = ({
         setSongs: setSongs,
         handleKeyDown: handleKeyDown,
         getRandomSong: getRandomSong,
+        setRandomSongs: setRandomSongs,
       }}
     >
       {children}
