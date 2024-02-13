@@ -27,9 +27,12 @@ interface LockArrayContextProviderProps {
   initial?: boolean[];
 }
 
+// Al iniciar la página todos los candados están desbloqueados
+const initialLockArray = [false, false, false, false, false];
+
 export const LockArrayContextProvider: FC<LockArrayContextProviderProps> = ({
   children,
-  initial = [],
+  initial = initialLockArray,
 }) => {
   const [lockArray, setLockArray] = useState<boolean[]>(initial);
   return (

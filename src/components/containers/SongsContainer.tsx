@@ -1,49 +1,20 @@
 "use client";
-import { getRandomSongs } from "@/spotifyServices/getRandomSongs";
 import { SongCard } from "../card/SongCard";
-import { Track as Song } from "@spotify/web-api-ts-sdk";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { GENRE } from "@/constants/constants";
-import LockArrayContext, {
-  LockArrayContextProvider,
-} from "@/context/LockArrayContext";
 import { CreatePlaylistButton } from "../input/CreatePlaylistButton";
+import SongsContext from "@/context/SongsContext";
+import SurpriseMeButton from "../input/SurpriseMeButton";
 
 export const SongsContainer = () => {
   // Current tracks in container
-  const [songs, setSongs] = useState<Song[]>([]);
   const searchParams = useSearchParams();
-
-  const { lockArray } = useContext(LockArrayContext);
+  const { songs, handleKeyDown } = useContext(SongsContext);
 
   // useEffect para actualizar el genero y la función de distribución
-
   useEffect(() => {
-    if (songs.length === 0) {
-      const genre: string = searchParams.get(GENRE)?.toString() || "rock";
-      getRandomSongs(lockArray.length, genre).then((randomSongs) =>
-        setSongs(randomSongs)
-      );
-    }
-
-    // Función de distribución
-    const handleKeyDown = (event: any) => {
-      if (event.key === " ") {
-        const genre: string = searchParams.get(GENRE)?.toString() || "rock";
-        getRandomSongs(lockArray.length, genre).then((songsObtained) =>
-          setSongs(
-            songsObtained.map((song, index) =>
-              lockArray[index] ? songs[index] : song
-            )
-          )
-        );
-      }
-    };
-
     console.log(songs.map((song) => song.name));
 
-    // Actualizar la función redefinida
     window.addEventListener("keydown", handleKeyDown);
     // Remover la función y el listener una vez que el componente es removido
     return () => {
@@ -76,9 +47,12 @@ export const SongsContainer = () => {
 
   return (
     <>
-    <div className="absolute top-5 left-5">
-      <CreatePlaylistButton uris={songs.map(s => s.uri)} />
-    </div>
+      <div className="absolute top-5 left-5">
+        <CreatePlaylistButton uris={songs.map((s) => s.uri)} />
+      </div>
+      <div className="absolute top-5 right-5">
+        <SurpriseMeButton />
+      </div>
       <div className="flex h-[70%] w-full bg-slate-300">
         {songs.map((song, index) => (
           <SongCard
