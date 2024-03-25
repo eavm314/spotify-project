@@ -1,9 +1,8 @@
-import { SongsContainer } from "@/components/containers/SongsContainer";
-import { GenresComboBox } from "@/components/input/GenresComboBox";
-import { Text } from "@/components/text/Text";
-import { TitleText } from "@/components/text/TitleText";
-import { LockArrayContextProvider } from "@/context/LockArrayContext";
-import { SongsContextProvider } from "@/context/SongsContext";
+import { SongsContainer } from "@/app/(routes)/generator/components/SongsContainer";
+import { GenresComboBox } from "@/app/(routes)/generator/components/input/GenresComboBox";
+import { Text, TitleText } from "@/components/text/text";
+import { LockArrayContextProvider } from "@/app/(routes)/generator/context/LockArrayContext";
+import { SongsContextProvider } from "@/app/(routes)/generator/context/SongsContext";
 import { getGenres, getRandomSongs } from "@/spotifyServices/getRandomSongs";
 
 const GeneratorPage = () => {

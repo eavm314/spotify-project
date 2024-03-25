@@ -1,4 +1,4 @@
-import { MixAuthStrategy } from "@/extensions/MixAuthStrategy";
+import { MixAuthStrategy } from "@/spotifyServices/extensions/MixAuthStrategy";
 import { AccessToken, SpotifyApi } from "@spotify/web-api-ts-sdk";
 import { cookies } from "next/headers";
 

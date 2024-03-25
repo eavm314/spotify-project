@@ -1,8 +1,8 @@
 "use client";
 import React, { useContext } from "react";
-import { Button } from "./Button";
-import SongsContext from "@/context/SongsContext";
-import LockArrayContext from "@/context/LockArrayContext";
+import { Button } from "../../../../../components/input/Button";
+import SongsContext from "@/app/(routes)/generator/context/SongsContext";
+import LockArrayContext from "@/app/(routes)/generator/context/LockArrayContext";
 
 const SurpriseMeButton = () => {
   const { setLockArray } = useContext(LockArrayContext);

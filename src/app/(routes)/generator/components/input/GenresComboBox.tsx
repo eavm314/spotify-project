@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ArrowDownIcon } from "@heroicons/react/16/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { GENRE } from "@/constants/constants";
+import { GENRE } from "@/app/(routes)/generator/constants/constants";
+import SongsContext from "../../context/SongsContext";
 
 interface GenresComboBoxProps {
   initialText: string;
@@ -16,6 +17,9 @@ export const GenresComboBox = (props: GenresComboBoxProps) => {
   const [selected, setSelected] = useState(props.initialText);
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
+
+  const { shuffle } = useContext(SongsContext);
+
 
   // Referencia para controlar al componente
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -100,6 +104,7 @@ export const GenresComboBox = (props: GenresComboBoxProps) => {
                 handleGenre(item);
                 setInputValue("");
                 setOpen(false);
+                shuffle();
               }
             }}
           >

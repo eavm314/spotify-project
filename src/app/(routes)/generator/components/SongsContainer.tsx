@@ -1,19 +1,25 @@
 "use client";
-import { SongCard } from "../card/SongCard";
+import { SongCard } from "./card/SongCard";
 import { useContext, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { CreatePlaylistButton } from "../input/CreatePlaylistButton";
-import SongsContext from "@/context/SongsContext";
-import SurpriseMeButton from "../input/SurpriseMeButton";
+import { CreatePlaylistButton } from "./input/CreatePlaylistButton";
+import SongsContext from "@/app/(routes)/generator/context/SongsContext";
+import SurpriseMeButton from "./input/SurpriseMeButton";
 
 export const SongsContainer = () => {
   // Current tracks in container
   const searchParams = useSearchParams();
-  const { songs, handleKeyDown } = useContext(SongsContext);
+  const { songs, shuffle } = useContext(SongsContext);
 
   // useEffect para actualizar el genero y la función de distribución
   useEffect(() => {
     console.log(songs.map((song) => song.name));
+
+    const handleKeyDown = (event: any) => {
+      if (event.key === " ") {
+        shuffle()
+      }
+    };
 
     window.addEventListener("keydown", handleKeyDown);
     // Remover la función y el listener una vez que el componente es removido

@@ -2,8 +2,8 @@ import { LockClosedIcon } from "@heroicons/react/24/outline";
 import { PlayIcon } from "@heroicons/react/24/outline";
 import { LockOpenIcon } from "@heroicons/react/24/outline";
 import React, { useContext } from "react";
-import ShuffleIcon from "./extra/ShuffleIcon";
-import SongsContext from "@/context/SongsContext";
+import ShuffleIcon from "./ShuffleIcon";
+import SongsContext from "@/app/(routes)/generator/context/SongsContext";
 
 interface RowButtonsProps {
   cardPos: number;

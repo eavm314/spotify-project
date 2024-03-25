@@ -14,24 +14,24 @@ import {
   useState,
 } from "react";
 import LockArrayContext from "./LockArrayContext";
-import { GENRE } from "@/constants/constants";
+import { GENRE } from "@/app/(routes)/generator/constants/constants";
 
 // Definiendo al contexto y sus valores
 
 interface SongsContextType {
   songs: Song[];
   setSongs: Dispatch<SetStateAction<Song[]>>;
-  handleKeyDown: (event: any) => void;
+  shuffle: () => void;
   getRandomSong: (cardPos: number) => void;
   setRandomSongs: () => void;
 }
 
 export const SongsContext = createContext<SongsContextType>({
   songs: [],
-  setSongs: () => {},
-  handleKeyDown: () => {},
-  getRandomSong: () => {},
-  setRandomSongs: () => {},
+  setSongs: () => { },
+  shuffle: () => { },
+  getRandomSong: () => { },
+  setRandomSongs: () => { },
 });
 
 // Definir el componente "Provider" del context
@@ -57,21 +57,16 @@ export const SongsContextProvider: FC<SongsContextProviderProps> = ({
   }, [searchParams]);
 
   // Función de distribución
-  const handleKeyDown = useCallback(
-    (event: any) => {
-      if (event.key === " ") {
-        getRandomSongs(lockArray.length, genre || "rock").then(
-          (songsObtained) =>
-            setSongs(
-              songsObtained.map((song, index) =>
-                lockArray[index] ? songs[index] : song
-              )
-            )
-        );
-      }
-    },
-    [genre, songs]
-  );
+  const shuffle = useCallback(() => {
+    getRandomSongs(lockArray.length, genre || "rock").then(
+      (songsObtained) =>
+        setSongs(
+          songsObtained.map((song, index) =>
+            lockArray[index] ? songs[index] : song
+          )
+        )
+    )
+  }, [genre, songs])
 
   // Obtener una cacnión randómica
   const getRandomSong = useCallback(
@@ -106,7 +101,7 @@ export const SongsContextProvider: FC<SongsContextProviderProps> = ({
       value={{
         songs: songs,
         setSongs: setSongs,
-        handleKeyDown: handleKeyDown,
+        shuffle: shuffle,
         getRandomSong: getRandomSong,
         setRandomSongs: setRandomSongs,
       }}

@@ -1,9 +1,9 @@
 import { Button } from "@/components/input/Button";
-import { Text } from "@/components/text/Text";
+import { Text } from "@/components/text/text";
 import { getRandomSongs } from "@/spotifyServices/getRandomSongs";
 import { getUser } from "@/spotifyServices/userInfo";
 import Link from "next/link";
-import { CreatePlaylistButton } from "../../../components/input/CreatePlaylistButton";
+import { CreatePlaylistButton } from "../generator/components/input/CreatePlaylistButton";
 
 const PruebasPage = async () => {
 

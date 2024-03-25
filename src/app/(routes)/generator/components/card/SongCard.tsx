@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import RowButtons from "./RowButtons";
 import SongImage from "./SongImage";
-import LockArrayContext from "@/context/LockArrayContext";
+import LockArrayContext from "@/app/(routes)/generator/context/LockArrayContext";
 
 interface SongCardProps {
   cardPos: number;
