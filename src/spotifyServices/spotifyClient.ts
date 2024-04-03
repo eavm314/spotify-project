@@ -9,9 +9,7 @@ var apiCalls = 0;
 
 export const api = new SpotifyApi(new MixAuthStrategy(clientId, secret), {
   afterRequest: async (url, options, response) => {
-    // console.log(await response.json())
     apiCalls++;
-    console.log(apiCalls);
-    console.log(response.status)
+    console.log(`${apiCalls}. URL: ${url}; Status: ${response.status}`);
   }
 });

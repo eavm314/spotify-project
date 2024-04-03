@@ -8,6 +8,7 @@ export async function GET(req: Request) {
   const scope = [
     "user-read-private", 
     "user-read-email",
+    "user-library-read",
     "playlist-modify-public",
     "playlist-modify-private"
   ];
