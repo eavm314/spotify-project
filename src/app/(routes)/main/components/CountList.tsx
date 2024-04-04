@@ -4,6 +4,8 @@ import { SubTitleText, Text } from "@/components/text/text";
 import { useGenresStore } from "../context/context"
 import { useShallow } from "zustand/react/shallow";
 import { CountType } from "@/types/general";
+import { Button } from "@/components/input/Button";
+import { createPlaylist } from "@/spotifyServices/createPlaylist";
 
 interface Props {
   title: string,
@@ -12,7 +14,7 @@ interface Props {
 
 export const CountList = ({ title, objectKey }: Props) => {
   const countState = useGenresStore(useShallow((state) => {
-    const mapping: {[key: string]: Record<string,number>} = {
+    const mapping: {[key: string]: Record<string,string[]>} = {
       "genre": state.genresCount,
       "artist": state.artistsCount,
       "year": state.yearCount
@@ -21,10 +23,10 @@ export const CountList = ({ title, objectKey }: Props) => {
   }));
 
   const countArray = Object.entries(countState);
-  countArray.sort((a, b) => b[1] - a[1]);
+  countArray.sort((a, b) => b[1].length - a[1].length);
 
   return (
-    <div className="w-80">
+    <div className="w-100">
       <SubTitleText>{title}</SubTitleText>
       {countArray.map((item) =>
         <div className="flex justify-between">
@@ -32,7 +34,10 @@ export const CountList = ({ title, objectKey }: Props) => {
             <Text>{item[0]}</Text>
           </div>
           <div>
-            <Text>{item[1]}</Text>
+            <Text>{item[1].length}</Text>
+          </div>
+          <div>
+            <Button action={() => createPlaylist(item[0], "Created by API", item[1])}>Crear Playlist</Button>
           </div>
         </div>
       )}

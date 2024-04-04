@@ -2,37 +2,39 @@ import { CountType } from '@/types/general'
 import { create } from 'zustand'
 
 interface SongState {
-  genresCount: Record<string, number>,
-  artistsCount: Record<string, number>,
-  yearCount: Record<string, number>,
-  updateCount: (type: CountType, value: string) => void
+  genresCount: Record<string, string[]>,
+  artistsCount: Record<string, string[]>,
+  yearCount: Record<string, string[]>,
+  updateCount: (type: CountType, value: string, uri: string) => void
 }
 
 export const useGenresStore = create<SongState>((set) => ({
   genresCount: {},
   artistsCount: {},
   yearCount: {},
-  updateCount: (type, value) => set((state) => {
+  updateCount: (type, value, uri) => set((state) => {
     switch (type) {
       case "genre":
         return {
           genresCount: {
             ...state.genresCount,
-            [value]: (state.genresCount[value] ?? 0) + 1
+            [value]: [...(state.genresCount[value] ?? []), uri]
           }
         };
       case "artist":
         return {
           artistsCount: {
             ...state.artistsCount,
-            [value]: (state.artistsCount[value] ?? 0) + 1
+            [value]: [...(state.artistsCount[value] ?? []), uri]
+
           }
         };
       case "year":
         return {
           yearCount: {
             ...state.yearCount,
-            [value]: (state.yearCount[value] ?? 0) + 1
+            [value]: [...(state.yearCount[value] ?? []), uri]
+
           }
         };
     }

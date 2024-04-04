@@ -11,5 +11,8 @@ export const api = new SpotifyApi(new MixAuthStrategy(clientId, secret), {
   afterRequest: async (url, options, response) => {
     apiCalls++;
     console.log(`${apiCalls}. URL: ${url}; Status: ${response.status}`);
+    if (response.status===429) {
+      console.log(response.headers.get("Retry-After"));
+    }
   }
 });

@@ -15,7 +15,11 @@ export const createPlaylist = async (name: string, description: string, initSong
     public: false
   })
 
-  await api.playlists.addItemsToPlaylist(playlist.id, initSongs);
+  const lim = 100;
+  for (let rg = 0; rg < (initSongs.length - 1) / lim; rg++) {
+    console.log(initSongs.slice(lim*rg, lim*(rg+1)))
+    await api.playlists.addItemsToPlaylist(playlist.id, initSongs.slice(lim*rg, lim*(rg+1)));
+  }
 }
 
 export const createRandomPlaylist = async (songUris: string[]) => {

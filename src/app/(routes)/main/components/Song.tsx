@@ -20,9 +20,9 @@ export const Song = ({ simpleTrack }: Props) => {
     const completeTrack = await getCompleteTrack(simpleTrack);
     setTrack(completeTrack);
 
-    completeTrack.genres.forEach((gen) => updateCount("genre", gen));
-    completeTrack.artists.forEach((art) => updateCount("artist", art.name));
-    updateCount("year", completeTrack.releaseYear);
+    completeTrack.genres.forEach((gen) => updateCount("genre", gen, completeTrack.uri));
+    completeTrack.artists.forEach((art) => updateCount("artist", art.name, completeTrack.uri));
+    updateCount("year", completeTrack.releaseYear, completeTrack.uri);
   }
 
   useEffect(() => {
